@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Iinclude
 SRC_DIR = src
-OBJ_DIR = obj
+OBJ_DIR = build
 DEPS = include/snake.h include/food.h include/game_screen.h include/pos.h
 SRC = $(wildcard $(SRC_DIR)/*.c)
 OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
