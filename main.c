@@ -8,7 +8,7 @@
 #define ROWS 30
 #define COLUMNS 30
 
-#define MAX_BODY 20
+#define MAX_BODY 200
 #define HEAD 0
 
 typedef enum { NO_MOV = 0, UP = 1, DOWN = 2, LEFT = 3, RIGHT = 4 } direction_t;
@@ -186,11 +186,13 @@ uint8_t moveSnake(snake_t* snake, direction_t next_direction) {
                         next_body = prev_body;
                 }
         }
+#ifdef DEBUG
         for (uint8_t i = 0; i < MAX_BODY; i++) {
                 mvprintw(ROWS + i, 0, "%d %d %d %d %d %d\n", i, snake->len,
                          snake->body[i].pos.x, snake->body[i].pos.y,
                          snake->body[i].direction, snake->body[i].exist);
         }
+#endif
         return 0;
 }
 
@@ -200,16 +202,16 @@ direction_t getUserDirection(WINDOW* snake_screen) {
         nodelay(snake_screen, TRUE);
         ch = wgetch(snake_screen);
         switch (ch) {
-                case KEY_UP:
+                case 'k':
                         direction = UP;
                         break;
-                case KEY_DOWN:
+                case 'j':
                         direction = DOWN;
                         break;
-                case KEY_LEFT:
+                case 'h':
                         direction = LEFT;
                         break;
-                case KEY_RIGHT:
+                case 'l':
                         direction = RIGHT;
                         break;
                 default:
@@ -279,6 +281,7 @@ int main() {
                         mvprintw(ROWS / 2, (COLUMNS - sizeof(message)) / 2,
                                  message);
                         nodelay(game_screen, FALSE);
+#ifdef DEBUG
                         for (uint8_t i = 0; i < MAX_BODY; i++) {
                                 mvprintw(ROWS + i, 0, "%d %d %d %d %d %d\n", i,
                                          snake.len, snake.body[i].pos.x,
@@ -286,6 +289,7 @@ int main() {
                                          snake.body[i].direction,
                                          snake.body[i].exist);
                         }
+#endif
 
                         getch();
                         clear();
