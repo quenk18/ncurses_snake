@@ -21,9 +21,14 @@ bool isSnakePositionValid(snake_t* snake) {
         return true;
 }
 
-bool isSnakeEatingFood(snake_t* snake, food_t* food) {
-        return snake->body[HEAD].pos.x == food->pos.x &&
-               snake->body[HEAD].pos.y == food->pos.y;
+int16_t isSnakeEatingFood(snake_t* snake, food_list_t food_list) {
+        for (int16_t i = 0; i < food_list.len; i++) {
+                if (snake->body[HEAD].pos.x == food_list.food[i].pos.x &&
+                    snake->body[HEAD].pos.y == food_list.food[i].pos.y) {
+                        return i;
+                }
+        }
+        return -1;
 }
 
 uint8_t growSnake(snake_t* snake) {

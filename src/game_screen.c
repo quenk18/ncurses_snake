@@ -36,6 +36,18 @@ WINDOW* initGameWindow() {
         return game_screen;
 }
 
+bool showEndScreen(WINDOW* snake_screen) {
+        char* message = "Snake is dead!";
+        mvwprintw(snake_screen, ROWS / 2, (COLUMNS - sizeof(message)) / 2, message, sizeof(message));
+        wrefresh(snake_screen);
+        nodelay(snake_screen, FALSE);
+        sleep(1);
+        getch();
+        clear();
+        nocbreak();
+        endwin();
+}
+
 uint8_t updateSnakeScreen(WINDOW* game_screen, snake_t* snake,
                           direction_t direction) {
         clearSnake(game_screen, snake);
@@ -44,10 +56,11 @@ uint8_t updateSnakeScreen(WINDOW* game_screen, snake_t* snake,
         return 0;
 }
 
-uint8_t showFood(WINDOW* game_screen, food_t* food, uint8_t len) {
-        for (uint8_t i = 0; i < len; i++) {
-                mvwaddnstr(game_screen, food[i].pos.y, food[i].pos.x,
-                           &(food[i].repr), 1);
+uint8_t showFood(WINDOW* game_screen, food_list_t food_list) {
+        for (uint8_t i = 0; i < food_list.len; i++) {
+                mvwaddnstr(game_screen, food_list.food[i].pos.y,
+                           food_list.food[i].pos.x, &(food_list.food[i].repr),
+                           1);
         }
         return 0;
 }

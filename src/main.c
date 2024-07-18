@@ -23,12 +23,9 @@ int main() {
         direction_t current_dir = RIGHT;
         direction_t next_dir = NO_MOV;
 
-        food_t food_list[FOOD_NB];
-        for (uint8_t i = 0; i < FOOD_NB; i++) {
-                food_list[i] = generateFood(COLUMNS, ROWS);
-        }
+        food_list_t food_list = generateFoodList(20, 'a');
 
-        showFood(game_screen, food_list, FOOD_NB);
+        showFood(game_screen, food_list);
 
         refresh();
 
@@ -39,29 +36,15 @@ int main() {
                 }
                 updateSnakeScreen(game_screen, &snake, current_dir);
 
-                for (uint8_t i = 0; i < FOOD_NB; i++) {
-                        if (isSnakeEatingFood(&snake, &food_list[i])) {
-                                food_list[i] = generateFood(COLUMNS, ROWS);
-                                showFood(game_screen, &food_list[i], 1);
-                                growSnake(&snake);
-                        }
+                int16_t eaten_food_idx = isSnakeEatingFood(&snake, food_list);
+                if (eaten_food_idx != -1) {
+                        food_list.food[eaten_food_idx] =
+                            generateFood(COLUMNS, ROWS, food_list.repr);
+                        showFood(game_screen, food_list);
+                        growSnake(&snake);
                 }
                 if (!isSnakePositionValid(&snake)) {
-                        char* message = "Snake is dead!";
-                        mvprintw(ROWS / 2, (COLUMNS - sizeof(message)) / 2,
-                                 message);
-                        nodelay(game_screen, FALSE);
-#ifdef DEBUG
-                        for (uint8_t i = 0; i < MAX_BODY; i++) {
-                                mvprintw(ROWS + i, 0, "%d %d %d %d %d %d\n", i,
-                                         snake.len, snake.body[i].pos.x,
-                                         snake.body[i].pos.y,
-                                         snake.body[i].direction,
-                                         snake.body[i].exist);
-                        }
-#endif
-                        getch();
-                        clear();
+                        showEndScreen(game_screen);
                         return 0;
                 }
                 refresh();

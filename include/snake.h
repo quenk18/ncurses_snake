@@ -25,7 +25,7 @@ typedef struct {
 } snake_t;
 
 bool isSnakePositionValid(snake_t* snake);
-bool isSnakeEatingFood(snake_t* snake, food_t* food);
+int16_t isSnakeEatingFood(snake_t* snake, food_list_t food_list); // return index of food eaten, -1 otherwise
 uint8_t growSnake(snake_t* snake);
 uint8_t moveBody(snake_body_t* body, direction_t direction);
 uint8_t moveSnake(snake_t* snake, direction_t next_direction);
