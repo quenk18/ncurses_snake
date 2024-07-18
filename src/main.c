@@ -1,8 +1,9 @@
 #include <stdint.h>
 #include <unistd.h>
-#include "snake.h"
-#include "game_screen.h"
+
 #include "food.h"
+#include "game_screen.h"
+#include "snake.h"
 
 int main() {
         // inits random seed
@@ -22,8 +23,12 @@ int main() {
         direction_t current_dir = RIGHT;
         direction_t next_dir = NO_MOV;
 
-        food_t food = generateFood(COLUMNS, ROWS);
-        showFood(game_screen, food);
+        food_t food_list[FOOD_NB];
+        for (uint8_t i = 0; i < FOOD_NB; i++) {
+                food_list[i] = generateFood(COLUMNS, ROWS);
+        }
+
+        showFood(game_screen, food_list, FOOD_NB);
 
         refresh();
 
@@ -34,10 +39,12 @@ int main() {
                 }
                 updateSnakeScreen(game_screen, &snake, current_dir);
 
-                if (isSnakeEatingFood(&snake, &food)) {
-                        food = generateFood(COLUMNS, ROWS);
-                        showFood(game_screen, food);
-                        growSnake(&snake);
+                for (uint8_t i = 0; i < FOOD_NB; i++) {
+                        if (isSnakeEatingFood(&snake, &food_list[i])) {
+                                food_list[i] = generateFood(COLUMNS, ROWS);
+                                showFood(game_screen, &food_list[i], 1);
+                                growSnake(&snake);
+                        }
                 }
                 if (!isSnakePositionValid(&snake)) {
                         char* message = "Snake is dead!";

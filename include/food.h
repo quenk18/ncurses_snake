@@ -6,6 +6,8 @@
 #include "pos.h"
 #include <time.h>
 
+#define FOOD_NB 3
+
 typedef struct {
         pos_t pos;
         char repr;

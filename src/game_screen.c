@@ -44,7 +44,10 @@ uint8_t updateSnakeScreen(WINDOW* game_screen, snake_t* snake,
         return 0;
 }
 
-uint8_t showFood(WINDOW* game_screen, food_t food) {
-        mvwaddnstr(game_screen, food.pos.y, food.pos.x, &(food.repr), 1);
+uint8_t showFood(WINDOW* game_screen, food_t* food, uint8_t len) {
+        for (uint8_t i = 0; i < len; i++) {
+                mvwaddnstr(game_screen, food[i].pos.y, food[i].pos.x,
+                           &(food[i].repr), 1);
+        }
         return 0;
 }
