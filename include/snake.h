@@ -2,7 +2,7 @@
 #define SNAKE_H
 
 #include <stdbool.h>
-#include <ncurses.h>
+#include <stdint.h>
 #include "pos.h"
 #include "food.h"
 
@@ -30,7 +30,5 @@ uint8_t growSnake(snake_t* snake);
 uint8_t moveBody(snake_body_t* body, direction_t direction);
 uint8_t moveSnake(snake_t* snake, direction_t next_direction);
 
-uint8_t clearSnake(WINDOW* game_screen, snake_t* snake);
-uint8_t showSnake(WINDOW* game_screen, snake_t* snake);
 
 #endif

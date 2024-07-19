@@ -110,20 +110,6 @@ uint8_t moveBody(snake_body_t* body, direction_t direction) {
         return 0;
 }
 
-uint8_t clearSnake(WINDOW* game_screen, snake_t* snake) {
-        for (uint8_t i = 0; i < snake->len; i++) {
-                mvwaddnstr(game_screen, snake->body[i].pos.y,
-                           snake->body[i].pos.x, " ", 1);
-        }
-        return 0;
-}
-uint8_t showSnake(WINDOW* game_screen, snake_t* snake) {
-        for (uint8_t i = 0; i < snake->len; i++) {
-                mvwaddnstr(game_screen, snake->body[i].pos.y,
-                           snake->body[i].pos.x, "s", 1);
-        }
-        return 0;
-}
 
 uint8_t moveSnake(snake_t* snake, direction_t next_direction) {
         snake_body_t prev_body;

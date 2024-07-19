@@ -35,14 +35,7 @@ int main() {
                         current_dir = next_dir;
                 }
                 updateSnakeScreen(game_screen, &snake, current_dir);
-
-                int16_t eaten_food_idx = isSnakeEatingFood(&snake, food_list);
-                if (eaten_food_idx != -1) {
-                        food_list.food[eaten_food_idx] =
-                            generateFood(COLUMNS, ROWS, food_list.repr);
-                        showFood(game_screen, food_list);
-                        growSnake(&snake);
-                }
+                handleSnakeEatingFood(game_screen, &snake, &food_list);
                 if (!isSnakePositionValid(&snake)) {
                         showEndScreen(game_screen);
                         return 0;

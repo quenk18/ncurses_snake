@@ -38,7 +38,8 @@ WINDOW* initGameWindow() {
 
 bool showEndScreen(WINDOW* snake_screen) {
         char* message = "Snake is dead!";
-        mvwprintw(snake_screen, ROWS / 2, (COLUMNS - sizeof(message)) / 2, message, sizeof(message));
+        mvwprintw(snake_screen, ROWS / 2, (COLUMNS - sizeof(message)) / 2,
+                  message, sizeof(message));
         wrefresh(snake_screen);
         nodelay(snake_screen, FALSE);
         sleep(1);
@@ -62,5 +63,33 @@ uint8_t showFood(WINDOW* game_screen, food_list_t food_list) {
                            food_list.food[i].pos.x, &(food_list.food[i].repr),
                            1);
         }
+        return 0;
+}
+
+uint8_t clearSnake(WINDOW* game_screen, snake_t* snake) {
+        for (uint8_t i = 0; i < snake->len; i++) {
+                mvwaddnstr(game_screen, snake->body[i].pos.y,
+                           snake->body[i].pos.x, " ", 1);
+        }
+        return 0;
+}
+uint8_t showSnake(WINDOW* game_screen, snake_t* snake) {
+        for (uint8_t i = 0; i < snake->len; i++) {
+                mvwaddnstr(game_screen, snake->body[i].pos.y,
+                           snake->body[i].pos.x, "s", 1);
+        }
+        return 0;
+}
+
+uint8_t handleSnakeEatingFood(WINDOW* snake_screen, snake_t* snake,
+                              food_list_t* food_list) {
+        int16_t eaten_food_idx = isSnakeEatingFood(snake, *food_list);
+        if (eaten_food_idx != -1) {
+                food_list->food[eaten_food_idx] =
+                    generateFood(COLUMNS, ROWS, food_list->repr);
+                showFood(snake_screen, *food_list);
+                growSnake(snake);
+        }
+
         return 0;
 }
